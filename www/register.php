@@ -3,6 +3,8 @@ require_once 'includes/global.inc.php';
 $emailAddress = "";  
 $password = "";  
 $password_confirm = "";  
+$fullName = "";
+$utcOffset = "";
 $error = "";  
   
 if(isset($_POST['submit-form'])) {     
@@ -10,7 +12,9 @@ if(isset($_POST['submit-form'])) {
     $emailAddress = $_POST['emailAddress'];  
     $password = $_POST['password'];  
     $password_confirm = $_POST['password-confirm'];  
-  
+		$fullName = $_POST['fullName'];
+		$utcOffset = $_POST['utcOffset'];
+	
     //initialize variables for form validation  
     $success = true;  
     $userTools = new UserTools();  
@@ -34,7 +38,9 @@ if(isset($_POST['submit-form'])) {
         //prep the data for saving in a new user object  
         $data['EmailAddress'] = $emailAddress;  
         $data['password'] = md5($password); //encrypt the password for storage  
-  
+				$data['FullName'] = $fullName;
+				$data['UtcOffset'] = $utcOffset;
+	
         //create the new user object  
         $newUser = new User($data);  
   
@@ -42,10 +48,10 @@ if(isset($_POST['submit-form'])) {
         $newUser->save(true);  
   
         //log them in  
-        $userTools->login($emailAddress, $password);  
+        //$userTools->login($emailAddress, $password);  
   
         //redirect them to a welcome page  
-        header("Location: welcome.php");  
+        //header("Location: welcome.php");  
     }  
 }  
   
@@ -64,7 +70,9 @@ if(isset($_POST['submit-form'])) {
     E-Mail Address: <input type="text" value="<?php echo $emailAddress; ?>" name="emailAddress" /><br/>  
     Password: <input type="password" value="<?php echo $password; ?>" name="password" /><br/>  
     Password (confirm): <input type="password" value="<?php echo $password_confirm; ?>" name="password-confirm" /><br/>  
-    E-Mail: <input type="text" value="<?php echo $email; ?>" name="email" /><br/>  
+		<p/>
+		Your Full Name: <input type="text" value="<?php echo $fullName; ?>" name="fullName" /><br/>
+		UTC Offset: <input type="text" value="<?php echo $utcOffset; ?>" name="utcOffset" /><br/>
     <input type="submit" value="Register" name="submit-form" />  
   
     </form>  

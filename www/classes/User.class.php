@@ -12,12 +12,12 @@ class User {
   
     function __construct($data) {  
 		$this->UserId = (isset($data['UserId'])) ? $data['UserId'] : "";
-		$this->DateAddedUtc = (isset($data['DateAddedUtc'])) ? data['DateAddedUtc'] : "";
-		$this->EmailAddress = (isset($data['EmailAddress'])) ? data['EmailAddress'] : "";
-		$this->FullName = (isset($data['FullName'])) ? data['FullName'] : "";
-		$this->HashedPassword = (isset($data['HashedPassword'])) ? data['HashedPassword'] : "";
-		$this->UtcOffset = (isset($data['UtcOffset'])) ? data['UtcOffset'] : "";
-		$this->ProfileImageLocation = (isset($data['ProfileImageLocation'])) ? data['ProfileImageLocation'] : "";
+		$this->DateAddedUtc = (isset($data['DateAddedUtc'])) ? $data['DateAddedUtc'] : "";
+		$this->EmailAddress = (isset($data['EmailAddress'])) ? $data['EmailAddress'] : "";
+		$this->FullName = (isset($data['FullName'])) ? $data['FullName'] : "";
+		$this->HashedPassword = (isset($data['HashedPassword'])) ? $data['HashedPassword'] : "";
+		$this->UtcOffset = (isset($data['UtcOffset'])) ? $data['UtcOffset'] : "";
+		$this->ProfileImageLocation = (isset($data['ProfileImageLocation'])) ? $data['ProfileImageLocation'] : "";
     }  
   
     public function save($isNewUser = false) {  
@@ -37,17 +37,17 @@ class User {
             );  
             $db->update($data, 'users', 'UserId = '.$this->UserId); 
         }else { 
-        //if the user is being registered for the first time. 
-            $data = array( 
-                "EmailAddress" => "'$this->EmailAddress'",
-				"FullName" => "'$this->FullName'",
-                "HashedPassword" => "'$this->HashedPassword'",  
-				"UtcOffset" => "'$this->UtcOffset'",
-				"ProfileImageLocation" => "'this->ProfileImageLocation'"
+						//if the user is being registered for the first time. 
+            $data = array(
+							"EmailAddress" => "'$this->EmailAddress'",
+							"FullName" => "'$this->FullName'",
+              "HashedPassword" => "'$this->HashedPassword'",  
+							"UtcOffset" => "$this->UtcOffset",
+							"ProfileImageLocation" => "'$this->ProfileImageLocation'"
             );  
-              
-            $this->UserId = $db->insert($data, 'User');  
             $this->DateAddedUtc = time();  
+            $this->UserId = $db->insert($data, 'User');  
+            
         }  
         return true;  
     }  
