@@ -1,8 +1,8 @@
 <?php    
 class Db {    
-    protected $db_name = 'yourdatabasename';  
-    protected $db_user = 'databaseusername';  
-    protected $db_pass = 'databasepassword';  
+    protected $db_name = 'filmbuddies';  
+    protected $db_user = 'filmbuddies';  
+    protected $db_pass = 'mydevpw';  
     protected $db_host = 'localhost';  
   
     public function connect() {  
