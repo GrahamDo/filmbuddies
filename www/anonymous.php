@@ -3,26 +3,8 @@
 		<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 	</head>
 	<body>
-		<div class="navbar navbar-fixed-top">  
-			<div class="navbar-inner">  
-				<div class="container">  
-					<span class="brand">filmbuddies.co.za</span>  				
-					<div class="nav-collapse">  
-						<ul class="nav">  
-							<li class="active"><a href="#">Home</a></li>  
-							<li><a href="#about">About</a></li>  
-							<li><a href="#contact">Contact</a></li>  
-						</ul>  
-						<form class="navbar-search pull-left">  
-							<input type="text" class="search-query" placeholder="Search">  
-						</form>					
-					</div>
-				</div> 
-			</div>  
-		</div>  
-		<div class="container">  
-			<div style="height:50;"><!-- spacer --></div>
-
+			<?php include "header.html" ?>
+	
 			<div class="well">
 				<h3>You are not logged in.</h3>
 				You may search for movies, but you may not contribute unless you log in.
@@ -48,10 +30,7 @@
 					Ad block
 				</div>
 			</div>  
-			<hr>  
-			<footer>  
-				<p>© filmbuddies.co.za 2012</p>  
-			</footer>  
-		</div>
+		<?php include "footer.html" ?>
+		
 	</body>  
 </html>  

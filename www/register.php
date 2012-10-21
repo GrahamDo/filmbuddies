@@ -62,19 +62,28 @@ if(isset($_POST['submit-form'])) {
 <html>  
 <head>  
     <title>Registration</title>  
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
 </head>  
 <body>  
-    <?php echo ($error != "") ? $error : ""; ?>  
-    <form action="register.php" method="post">  
-  
-    E-Mail Address: <input type="text" value="<?php echo $emailAddress; ?>" name="emailAddress" /><br/>  
-    Password: <input type="password" value="<?php echo $password; ?>" name="password" /><br/>  
-    Password (confirm): <input type="password" value="<?php echo $password_confirm; ?>" name="password-confirm" /><br/>  
-		<p/>
-		Your Full Name: <input type="text" value="<?php echo $fullName; ?>" name="fullName" /><br/>
-		UTC Offset: <input type="text" value="<?php echo $utcOffset; ?>" name="utcOffset" /><br/>
-    <input type="submit" value="Register" name="submit-form" />  
-  
-    </form>  
+		<?php include "header.html" ?>
+		
+		<div class="row">
+			<div class="span4">
+				<?php echo ($error != "") ? $error : ""; ?>  
+				<form action="register.php" method="post">  
+			
+				E-Mail Address: <input type="text" value="<?php echo $emailAddress; ?>" name="emailAddress" /><br/>  
+				Password: <input type="password" value="<?php echo $password; ?>" name="password" /><br/>  
+				Password (confirm): <input type="password" value="<?php echo $password_confirm; ?>" name="password-confirm" /><br/>  
+				<p/>
+				Your Full Name: <input type="text" value="<?php echo $fullName; ?>" name="fullName" /><br/>
+				UTC Offset: <input type="text" value="<?php echo $utcOffset; ?>" name="utcOffset" /><br/>
+				<input type="submit" value="Register" name="submit-form" />  
+			
+				</form>  
+			</div>
+		</div>
+		
+		<?php include "footer.html" ?>
 </body>  
 </html> 
