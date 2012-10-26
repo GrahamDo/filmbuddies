@@ -7,70 +7,95 @@ $fullName = "";
 $utcOffset = "";
 $error = "";  
   
-if(isset($_POST['submit-form'])) {     
-    //retrieve the $_POST variables  
+if(isset($_POST['emailAddress'])) {     
     $emailAddress = $_POST['emailAddress'];  
     $password = $_POST['password'];  
     $password_confirm = $_POST['password-confirm'];  
 		$fullName = $_POST['fullName'];
 		$utcOffset = $_POST['utcOffset'];
 	
-    //initialize variables for form validation  
     $success = true;  
     $userTools = new UserTools();  
   
-    //validate that the form was filled out correctly  
-    //check to see if user name already exists  
+    if($userTools->checkEmailAddressExists($emailAddress))  
     if($userTools->checkEmailAddressExists($emailAddress))  
     {  
-        $error .= "That e-mail address is already taken.<br/> \n\r";  
-        $success = false;  
-    }  
-  
-    //check to see if passwords match  
-    if($password != $password_confirm) {  
-        $error .= "Passwords do not match.<br/> \n\r";  
+        $error .= "<p style=\"color:red;\">That e-mail address is already taken.</p> \n\r";  
         $success = false;  
     }  
   
     if($success)  
     {  
-        //prep the data for saving in a new user object  
         $data['EmailAddress'] = $emailAddress;  
         $data['HashedPassword'] = md5($password); //encrypt the password for storage  
 				$data['FullName'] = $fullName;
 				$data['UtcOffset'] = $utcOffset;
 	
-        //create the new user object  
         $newUser = new User($data);  
   
-        //save the new user to the database  
         $newUser->save(true);  
   
-        //log them in  
+        //TODO log them in  
         //$userTools->login($emailAddress, $password);  
   
-        //redirect them to a welcome page  
+        //TODO redirect them to a welcome page  
         //header("Location: welcome.php");  
     }  
 }  
-  
-//If the form wasn't submitted, or didn't validate  
-//then we show the registration form again  
 ?>  
   
 <html>  
 <head>  
     <title>Registration</title>  
 		<link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+		<script language="javascript">	
+			function ValidateField(txt, messageIfFail)
+			{
+				if (txt == null || txt == "")
+				{
+					alert(messageIfFail);
+					return false;
+				}			
+				return true;
+			}
+		
+			function SubmitForm()
+			{
+				if (!ValidateField(document.forms["registerForm"]["emailAddress"].value, "Please enter a valid e-mail address!"))
+					return;
+					
+				var password = document.forms["registerForm"]["password"].value;
+				if (!ValidateField(password, "Please enter a valid password!"))
+					return;
+				if (password != document.forms["registerForm"]["password-confirm"].value)
+				{
+					alert("Password and Confirm Password don't match!");
+					return;
+				}
+				if (!ValidateField(document.forms["registerForm"]["fullName"].value, "Please enter your real full name!"))
+					return;
+				
+				var utcOffset = document.forms["registerForm"]["utcOffset"].value;
+				if (!ValidateField(utcOffset, "Please enter your UTC offset (the number of hours you are ahead or behind UTC)!"))
+					return;
+
+				if((parseFloat(utcOffset) != parseInt(utcOffset)) || isNaN(utcOffset))
+				{
+					alert("Please enter only whole numbers for the UTC offset!");
+					return;
+				}
+				
+				document.forms["registerForm"].submit();
+			}
+		</script>		
 </head>  
 <body>  
 		<?php include "header.html" ?>
 		
 		<div class="row">
-			<div class="span4">
+			<div class="span12">
 				<?php echo ($error != "") ? $error : ""; ?>  
-				<form action="register.php" method="post">  
+				<form id="registerForm" action="register.php" method="post">  
 			
 				E-Mail Address: <input type="text" value="<?php echo $emailAddress; ?>" name="emailAddress" /><br/>  
 				Password: <input type="password" value="<?php echo $password; ?>" name="password" /><br/>  
@@ -78,8 +103,7 @@ if(isset($_POST['submit-form'])) {
 				<p/>
 				Your Full Name: <input type="text" value="<?php echo $fullName; ?>" name="fullName" /><br/>
 				UTC Offset: <input type="text" value="<?php echo $utcOffset; ?>" name="utcOffset" /><br/>
-				<input type="submit" value="Register" name="submit-form" />  
-			
+				<a class="btn btn-danger" onclick="SubmitForm();">Register</a>
 				</form>  
 			</div>
 		</div>
