@@ -37,7 +37,7 @@ if(isset($_POST['submit-form'])) {
     {  
         //prep the data for saving in a new user object  
         $data['EmailAddress'] = $emailAddress;  
-        $data['password'] = md5($password); //encrypt the password for storage  
+        $data['HashedPassword'] = md5($password); //encrypt the password for storage  
 				$data['FullName'] = $fullName;
 				$data['UtcOffset'] = $utcOffset;
 	
