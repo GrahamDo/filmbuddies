@@ -7,23 +7,49 @@ $fullName = "";
 $utcOffset = "";
 $error = "";  
   
-if(isset($_POST['emailAddress'])) {     
-    $emailAddress = $_POST['emailAddress'];  
-    $password = $_POST['password'];  
-    $password_confirm = $_POST['password-confirm'];  
-		$fullName = $_POST['fullName'];
-		$utcOffset = $_POST['utcOffset'];
-	
+if(isset($_POST['emailAddress'])) 
+{   
     $success = true;  
-    $userTools = new UserTools();  
-  
-    if($userTools->checkEmailAddressExists($emailAddress))  
-    if($userTools->checkEmailAddressExists($emailAddress))  
-    {  
-        $error .= "<p style=\"color:red;\">That e-mail address is already taken.</p> \n\r";  
-        $success = false;  
-    }  
-  
+
+		//First thing's first - validate the profile image
+		$allowedExts = array("jpg", "jpeg", "gif", "png");
+		$extension = end(explode(".", $_FILES["file"]["name"]));
+		if ((($_FILES["profileImage"]["type"] == "image/gif")
+		|| ($_FILES["profileImage"]["type"] == "image/jpeg")
+		|| ($_FILES["profileImage"]["type"] == "image/png")
+		|| ($_FILES["profileImage"]["type"] == "image/pjpeg"))
+		&& ($_FILES["profileImage"]["size"] < 20000)
+		&& in_array($extension, $allowedExts)) 
+		{
+			if ($_FILES["profileImage"]["error"] > 0)
+			{
+				$error .= "<p style=\"color:red;\">Error: " . $_FILES["profileImage"]["error"] . "/p>";
+				$success = false;
+			}
+		}
+		else
+		{
+			echo "Invalid file";
+			$success = false;
+		}
+
+		if ($success)
+		{
+			$emailAddress = $_POST['emailAddress'];  
+			$password = $_POST['password'];  
+			$password_confirm = $_POST['password-confirm'];  
+			$fullName = $_POST['fullName'];
+			$utcOffset = $_POST['utcOffset'];
+		
+			$userTools = new UserTools();  
+
+			if($userTools->checkEmailAddressExists($emailAddress))  
+			{  
+					$error .= "<p style=\"color:red;\">That e-mail address is already taken.</p> \n\r";  
+					$success = false;  
+			}  
+		}
+				
     if($success)  
     {  
         $data['EmailAddress'] = $emailAddress;  
@@ -103,6 +129,7 @@ if(isset($_POST['emailAddress'])) {
 				<p/>
 				Your Full Name: <input type="text" value="<?php echo $fullName; ?>" name="fullName" /><br/>
 				UTC Offset: <input type="text" value="<?php echo $utcOffset; ?>" name="utcOffset" /><br/>
+				Profile image: <input type="file" name="profileImage" id="profileImage" /><br/>
 				<a class="btn btn-danger" onclick="SubmitForm();">Register</a>
 				</form>  
 			</div>
